@@ -4,6 +4,9 @@
   "main": "src/index.ts",
   "repository": "https://github.com/crustio/ipfs-web3-authenticator.git",
   "author": "Zikun Fan <kun@crust.network>",
+  "contributors": [
+    "Gavin Fu <gavfu@decoo.io>"
+  ],
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development nodemon ./src/index.ts",
