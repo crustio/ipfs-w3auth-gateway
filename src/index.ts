@@ -23,7 +23,7 @@ const server = http.createServer(function(req: any, res: any) {
   if (!_.includes(req.headers.authorization, 'Basic ')) {
     res.writeHead(401, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
-      message: 'Empty Signature'
+      Error: 'Empty Signature'
     }));
     return;
   }
@@ -45,7 +45,7 @@ const server = http.createServer(function(req: any, res: any) {
     console.error(error.message);
     res.writeHead(401, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
-      message: 'Invalid Signature'
+      Error: 'Invalid Signature'
     }));
     return;
   }
@@ -53,16 +53,22 @@ const server = http.createServer(function(req: any, res: any) {
   // You can define here your custom logic to handle the request
   // and then proxy the request.
   if (isValid === true) {
-    console.log('Validation success');
-    proxy.web(req, res, { target: process.env.PROXY_TARGET || 'http://127.0.0.1:5001' });
+    const target = process.env.PROXY_TARGET || 'http://127.0.0.1:5001';
+    console.log(`Validation success. Proxying request to ${target}`);
+    proxy.web(req, res, { target }, function(error: any) {
+      console.error(error);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        Error: error.message
+      }));
+    });
   }
   else {
     console.error('Validation failed');
     res.writeHead(401, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
-      data: 'Invalid Signature'
+      Error: 'Invalid Signature'
     }));
-    return;
   }
 });
 
