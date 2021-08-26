@@ -59,6 +59,70 @@ https://ipfs.example.com {
 }
 ```
 
+### 2.2 With nginx
+
+- Auth both readable and writeable API
+
+```conf
+server {
+    listen       80;
+    listen  [::]:80;
+    server_name  ipfs.example.com;
+
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+
+    location / {
+        proxy_http_version 1.1;
+        proxy_pass   http://localhost:5050/;
+        proxy_set_header Host               $http_host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        add_header Cache-Control no-cache;
+    }
+}
+```
+
+- Auth only writeable API
+
+```conf
+server {
+    listen       80;
+    listen  [::]:80;
+    server_name  ipfs.example.com;
+
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+
+    location /api {
+        proxy_http_version 1.1;
+        proxy_pass   http://localhost:5050/api;
+        proxy_set_header Host               $http_host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        add_header Cache-Control no-cache;
+    }
+
+    location / {
+        proxy_http_version 1.1;
+        proxy_pass   http://localhost:8080;
+        proxy_set_header Host               $http_host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        add_header Cache-Control no-cache;
+    }
+
+}
+```
+
 ## 🤟🏻 Usage
 
 The IPFS W3Auth Gateway is compatible with the official IPFS API. Same HTTP endpoints, flags, arguments. The only additional step you must take when interacting with the Infura API is to configure the correct Basic Authentication header.
