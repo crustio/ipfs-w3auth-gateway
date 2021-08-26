@@ -1,0 +1,36 @@
+{
+  "name": "ipfs-web3-authenticator",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "repository": "https://github.com/crustio/ipfs-web3-authenticator.git",
+  "author": "Zikun Fan <kun@crust.network>",
+  "contributors": [
+    "Gavin Fu <gavfu@decoo.io>"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon ./src/index.ts",
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "yarn run compile",
+    "pretest": "yarn run compile",
+    "posttest": "yarn run lint"
+  },
+  "dependencies": {
+    "@polkadot/api": "^5.6.1",
+    "dotenv": "^10.0.0",
+    "http-proxy": "^1.18.1",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/node": "^14.11.2",
+    "gts": "^3.1.0",
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.0.3"
+  }
+}
