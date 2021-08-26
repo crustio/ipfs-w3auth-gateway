@@ -77,5 +77,5 @@ const server = http.createServer((req: any, res: any) => {
   }
 });
 
-console.log('Listening on port 5050');
+console.log(`Listening on port ${process.env.PORT}`);
 server.listen(process.env.PORT || 5050);
