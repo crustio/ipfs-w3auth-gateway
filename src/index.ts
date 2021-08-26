@@ -11,6 +11,16 @@ import * as _ from 'lodash';
 const proxy = httpProxy.createProxyServer({});
 
 const server = http.createServer((req: any, res: any) => {
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(
+      JSON.stringify({
+        Success: true,
+      })
+    );
+    return;
+  }
+
   // 1. Parse auth header as [pubKey, sig]
   if (!_.includes(req.headers.authorization, 'Basic ')) {
     res.writeHead(401, {'Content-Type': 'application/json'});
