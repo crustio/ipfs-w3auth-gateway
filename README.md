@@ -1,82 +1,124 @@
-# IPFS Web3 Authenticator &middot; [![GitHub license](https://img.shields.io/github/license/crustio/crust?logo=apache)](LICENSE)
+# IPFS W3Auth &middot; [![GitHub license](https://img.shields.io/github/license/crustio/crust?logo=apache)](LICENSE)
 
-A web3 authentication service on IPFS gateway.
+IPFS W3Auth is a lightweight Web3-based authentication service basedon **IPFS gateway** and **reverse proxy**
 
-## Deployment
+## ❓ [About IPFS W3Auth](https://wiki.crust.network/docs/en/buildIPFSWeb3AuthGW)
 
-### 1. IPFS Gateway
+## 🚀 Deployment
 
-Deploy and run a plain IPFS gateway. By default, [IPFS HTTP API](https://docs.ipfs.io/reference/http/api) is exposed at port 5001. 
+> Please make sure you have IPFS Gateway runnning locally, you can refer [this doc](https://docs.ipfs.io/concepts/ipfs-gateway/#overview) to config the gateway information.
 
-### 2. IPFS WEB3 Authenticator
+### 1. Run IPFS W3Auth
 
-#### Create and Configure .env
+- Run with docker
 
-*.env* file can be created by copying *[.env-example](https://github.com/crustio/ipfs-web3-authenticator/blob/main/.env-example)* file. Below is the list of environment variables that could be configured in *.env*:
-
-- **PORT**: Local port that this IPFS Web3 Authenticator service will listen for incoming requests
-
-- **PROXY_TARGET**: API endpoint that client requests will be fordwarded to after authentication. This should be the API endpoint that is exposed by an IPFS Gateway.
-
-#### Build and Start Service
-
-```sh
-$ yarn && yarn build && yarn start
+```shell
+docker run -e PORT=5050 -e IPFS_ENDPOINT=http://localhost:5001 --network=host crustio/ipfs-w3auth
 ```
 
-### 3. Candy
+- Run with node native
 
-[Caddy](https://caddyserver.com) is recommended to be used together with IPFS Web3 Authenticator.
+```shell
+# 1. Clone repo
+git clone https://github.com/crustio/ipfs-web3-authenticator.git
 
-As an example, if your IPFS Web3 Authenticator service is deployed on the same machine with your Caddy server, listening on 5050 port, and you want it to be accessed at *https://ipfs-auth.example.com*, the simplest [Caddyfile](https://caddyserver.com/docs/quick-starts/caddyfile) could be like:
+# 2. Install and build
+yarn && yarn build
 
-```yml
-https://ipfs-auth.example.com {
+# 3. Run
+PORT=5050 IPFS_ENDPOINT=http://localhost:5001 yarn start
+```
+
+- **PORT**: W3Auth service listening port
+
+- **IPFS_ENDPOINT**: IPFS local API endpoint
+
+### 2. Config with reverse proxy
+
+### 2.1 With caddy
+
+- Auth both readable and writeable API
+
+```txt
+https://ipfs.example.com {
   reverse_proxy 127.0.0.1:5050
 }
 ```
 
-## Usage
+- Auth only writeable API
 
-Client can now call [IPFS HTTP API](https://docs.ipfs.io/reference/http/api) as usual, only that a signature generated via a Web3 wallet need be included as [HTTP access authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) credentials.
+```txt
+https://ipfs.example.com {
+    reverse_proxy /api/* localhost:5050 {
+        header_down Access-Control-Allow-Origin *
+        header_down Access-Control-Allow-Methods "POST"
+        header_down Access-Control-Allow-Headers *
+    }
 
-### Sample Request
-
-```sh
-curl --request POST 'https://ipfs-auth.example.com/api/v0/add' \
- --header 'Authorization: Basic <CREDENTIALS>' \
- --form 'path=@"<FILE_PATH>"'
+    reverse_proxy /ipfs/* localhost:8080
+}
 ```
 
-### Credential Generation
+## 🤟🏻 Usage
 
-Authentication credentials can be generated using Polkadot and essentially all substrate-based (like Crust, of course) Web3 wallets.  
+The IPFS W3Auth Gateway is compatible with the official IPFS API. Same HTTP endpoints, flags, arguments. The only additional step you must take when interacting with the Infura API is to configure the correct Basic Authentication header.
 
-Usually credentials are generated *programmatically* as part of client applications, but as an illustration, here are *manual* steps to generate credentials using Polkadot Apps:
+```curl
+Authorization: Basic <base64(PubKey:SignedMsg)>
+```
 
-1. Open [Polkadot Apps Portal](https://polkadot.js.org/apps), add an account by pressing *'+ Add account'*. Or, if you are using [Polkadot Extension](https://polkadot.js.org/extension), an account will be auto-injected to the Apps Portal.
+### Get Auth header
 
-2. Go to '*Developer* -> *Sign and verify*', select an account, and sign the account's *public address* to create the *signature*.
+#### 1. With Substrate
 
-3. Construct a string with account public address and the generated signature in format of `<ACCOUNT_PUBLIC_ADDRESS>:<SIGNATURE>`, and base64 encode it. Congratulations! Now you get the credentials to authenticate with the IPFS Web3 Authenticator.
+##### Get `PubKey`
 
-## Building
+`PubKey` is just the substrate address, like `5Chu5r5GA41xFgMXLQd6CDjz1ABGEGVGS276xjv93ApY6vD7`
 
-### Install dependencies
-```sh
-$ yarn
+All substrate-based chains are adapted:
+
+- [Crust](https://apps.crust.network/?rpc=wss%3A%2F%2Frpc.crust.network#/explorer)
+- [Polkadot](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fpolkadot.elara.patract.io#/explorer)
+- [Kusama](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fkusama.api.onfinality.io%2Fpublic-ws#/explorer)
+- ...
+
+##### Get `SignedMsg`
+
+Just sign the `PubKey` with your private key to get the `SignedMsg`
+
+- With [Crust Apps](https://apps.crust.network/?rpc=wss%3A%2F%2Frpc.crust.network#/signing)
+- With [Polkadot Apps](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frpc.polkadot.io#/signing)
+- With [Subkey](https://substrate.dev/docs/en/knowledgebase/integrate/subkey#signing-and-verifying-messages)
+- With [Node SDK](https://apps.crust.network/docs/util-crypto/examples/encrypt-decrypt)
+
+#### 2. With Ethereum
+
+> Comming soon
+
+## 💻 Build
+
+### Install
+
+```shell
+yarn
 ```
 
 ### Run in dev mode
-```sh
-$ yarn dev
+
+```shell
+yarn dev
 ```
 
 ### Build and run in prod mode
-```sh
-$ yarn build
-$ yarn start
+
+```shell
+yarn build
+yarn start
 ```
+
+## 🙋🏻‍♂️ Contribute
+
+Please feel free to send a PR
 
 ## License
 
