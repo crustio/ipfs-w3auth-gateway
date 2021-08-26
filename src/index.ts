@@ -53,7 +53,7 @@ const server = http.createServer((req: any, res: any) => {
   // You can define here your custom logic to handle the request
   // and then proxy the request.
   if (isValid === true) {
-    const target = process.env.PROXY_TARGET || 'http://127.0.0.1:5001';
+    const target = process.env.IPFS_ENDPOINT || 'http://127.0.0.1:5001';
     console.log(`Validation success. Proxying request to ${target}`);
 
     proxy.web(req, res, {target}, (error: any) => {
