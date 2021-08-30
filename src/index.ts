@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 
 const proxy = httpProxy.createProxyServer({});
 
-const server = http.createServer((req: any, res: any) => {
+const server = http.createServer((req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.end(
@@ -66,7 +66,7 @@ const server = http.createServer((req: any, res: any) => {
     const target = process.env.IPFS_ENDPOINT || 'http://127.0.0.1:5001';
     console.log(`Validation success. Proxying request to ${target}`);
 
-    proxy.web(req, res, {target}, (error: any) => {
+    proxy.web(req, res, {target}, error => {
       console.error(error);
       res.writeHead(500, {'Content-Type': 'application/json'});
       res.end(
@@ -87,5 +87,6 @@ const server = http.createServer((req: any, res: any) => {
   }
 });
 
-console.log(`Listening on port ${process.env.PORT}`);
-server.listen(process.env.PORT || 5050);
+const port = process.env.PORT || 5050;
+console.log(`Listening on port ${port}`);
+server.listen(port);
