@@ -8,9 +8,12 @@ import {decodeAddress, signatureVerify} from '@polkadot/util-crypto';
 import {u8aToHex} from '@polkadot/util';
 import * as _ from 'lodash';
 
+const EthAccounts = require('web3-eth-accounts');
+const ethAccounts = new EthAccounts();
+
 const proxy = httpProxy.createProxyServer({});
 
-const server = http.createServer((req: any, res: any) => {
+const server = http.createServer((req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.end(
@@ -44,11 +47,21 @@ const server = http.createServer((req: any, res: any) => {
     const [address, sig] = credentials.split(':');
     console.log(`Got public address '${address}' and sigature '${sig}'`);
 
-    // 2. Validate with substrate
+    // 2.1 Validate with substrate
     // TODO: More web3 validating methods, like ethereum, solana, filecoin, ...
     const publicKey = decodeAddress(address);
     const hexPublicKey = u8aToHex(publicKey);
     isValid = signatureVerify(address, sig, hexPublicKey).isValid;
+
+    // 2.2 Validate with eth
+    if (!isValid) {
+      console.log(
+        'Invalid polkadot signature. Trying to validate as ethereum signature.'
+      );
+      const recoveredAddress = ethAccounts.recover(address, sig);
+      console.log(`Recovered address ${recoveredAddress}`);
+      isValid = recoveredAddress === address;
+    }
   } catch (error) {
     console.error(error.message);
     res.writeHead(401, {'Content-Type': 'application/json'});
@@ -66,7 +79,7 @@ const server = http.createServer((req: any, res: any) => {
     const target = process.env.IPFS_ENDPOINT || 'http://127.0.0.1:5001';
     console.log(`Validation success. Proxying request to ${target}`);
 
-    proxy.web(req, res, {target}, (error: any) => {
+    proxy.web(req, res, {target}, error => {
       console.error(error);
       res.writeHead(500, {'Content-Type': 'application/json'});
       res.end(
@@ -87,5 +100,6 @@ const server = http.createServer((req: any, res: any) => {
   }
 });
 
-console.log(`Listening on port ${process.env.PORT}`);
-server.listen(process.env.PORT || 5050);
+const port = process.env.PORT || 5050;
+console.log(`Listening on port ${port}`);
+server.listen(port);
