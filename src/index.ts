@@ -8,6 +8,9 @@ import {decodeAddress, signatureVerify} from '@polkadot/util-crypto';
 import {u8aToHex} from '@polkadot/util';
 import * as _ from 'lodash';
 
+const EthAccounts = require('web3-eth-accounts');
+const ethAccounts = new EthAccounts();
+
 const proxy = httpProxy.createProxyServer({});
 
 const server = http.createServer((req, res) => {
@@ -44,11 +47,21 @@ const server = http.createServer((req, res) => {
     const [address, sig] = credentials.split(':');
     console.log(`Got public address '${address}' and sigature '${sig}'`);
 
-    // 2. Validate with substrate
+    // 2.1 Validate with substrate
     // TODO: More web3 validating methods, like ethereum, solana, filecoin, ...
     const publicKey = decodeAddress(address);
     const hexPublicKey = u8aToHex(publicKey);
     isValid = signatureVerify(address, sig, hexPublicKey).isValid;
+
+    // 2.2 Validate with eth
+    if (!isValid) {
+      console.log(
+        'Invalid polkadot signature. Trying to validate as ethereum signature.'
+      );
+      const recoveredAddress = ethAccounts.recover(address, sig);
+      console.log(`Recovered address ${recoveredAddress}`);
+      isValid = recoveredAddress === address;
+    }
   } catch (error) {
     console.error(error.message);
     res.writeHead(401, {'Content-Type': 'application/json'});
