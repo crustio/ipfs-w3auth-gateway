@@ -48,17 +48,21 @@ const server = http.createServer((req, res) => {
     console.log(`Got public address '${address}' and sigature '${sig}'`);
 
     // 2.1 Validate with substrate
-    // TODO: More web3 validating methods, like ethereum, solana, filecoin, ...
-    const publicKey = decodeAddress(address);
-    const hexPublicKey = u8aToHex(publicKey);
-    isValid = signatureVerify(address, sig, hexPublicKey).isValid;
+    // TODO: More web3 validating methods, like solana, filecoin, ...
+    try {
+      console.log('Trying to validate as polkadot signature.');
+      const publicKey = decodeAddress(address);
+      const hexPublicKey = u8aToHex(publicKey);
+      isValid = signatureVerify(address, sig, hexPublicKey).isValid;
+    } catch (error) {
+      console.error(error.message);
+    }
 
     // 2.2 Validate with eth
     if (!isValid) {
-      console.log(
-        'Invalid polkadot signature. Trying to validate as ethereum signature.'
-      );
-      const recoveredAddress = ethAccounts.recover(address, sig);
+      console.log('Trying to validate as ethereum signature.');
+      const signature = _.startsWith(sig, '0x') ? sig : `0x${sig}`;
+      const recoveredAddress = ethAccounts.recover(address, signature);
       console.log(`Recovered address ${recoveredAddress}`);
       isValid = recoveredAddress === address;
     }
