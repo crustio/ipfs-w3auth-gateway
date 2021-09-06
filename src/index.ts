@@ -1,8 +1,8 @@
 /* eslint-disable node/no-extraneous-import */
 require('dotenv').config();
 
-import * as http from 'http';
 import * as httpProxy from 'http-proxy';
+import {Request, Response} from 'express';
 
 import {decodeAddress, signatureVerify} from '@polkadot/util-crypto';
 import {u8aToHex} from '@polkadot/util';
@@ -11,19 +11,15 @@ import * as _ from 'lodash';
 const EthAccounts = require('web3-eth-accounts');
 const ethAccounts = new EthAccounts();
 
+const express = require('express');
+const cors = require('cors');
+
+const server = express();
+server.use(cors());
+
 const proxy = httpProxy.createProxyServer({});
 
-const server = http.createServer((req, res) => {
-  if (req.method === 'OPTIONS') {
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(
-      JSON.stringify({
-        Success: true,
-      })
-    );
-    return;
-  }
-
+server.all('*', (req: Request, res: Response) => {
   // 1. Parse auth header as [pubKey, sig]
   if (!_.includes(req.headers.authorization, 'Basic ')) {
     res.writeHead(401, {'Content-Type': 'application/json'});
