@@ -125,13 +125,21 @@ server {
 
 ## 🤟🏻 Usage
 
-The IPFS W3Auth Gateway is compatible with the official IPFS API. Same HTTP endpoints, flags, arguments. The only additional step you must take when interacting with the Infura API is to configure the correct Basic Authentication header.
+The IPFS W3Auth Gateway is compatible with the official IPFS API, with the same HTTP endpoints, flags and arguments. The only additional step you must take when interacting with the IPFS W3Auth Gateway API is to configure the correct Basic Authentication header.
 
 ```curl
 Authorization: Basic <base64(PubKey:SignedMsg)>
 ```
 
+Let's take `cURL` as an example 😎
+
+```shell
+curl -X POST -F file=@myfile -u "PubKey:SignedMsg" "https://localhost:5050/api/v0/add"
+```
+
 ### Get Auth header
+
+You can get `PubKey` and `SignedMsg` by using the following web3-ways:
 
 #### 1. With Substrate
 
@@ -157,7 +165,28 @@ Just sign the `PubKey` with your private key to get the `SignedMsg`
 
 #### 2. With Ethereum
 
-> Comming soon
+##### Get `PubKey`
+
+`PubKey` is just the ethereum address(42-characters) start with `0x`
+
+##### Get `SignedMsg`s
+
+Just sign the `PubKey` with your eth private key to get the `SignedMsg`
+
+- With [MyEtherWallet](https://www.myetherwallet.com/wallet/sign)
+- With [MyCrypto](https://app.mycrypto.com/sign-message)
+
+#### 3. With Solana
+
+> Comming Soon
+
+#### 4. With Polygon
+
+> Comming Soon
+
+#### 5. With Near
+
+> Comming Soon
 
 ## 💻 Build
 
