@@ -1,6 +1,7 @@
 import {AuthData, AuthError} from './types';
 import PolkadotAuth from './polkadotAuth';
 import EthAuth from './ethAuth';
+import SolanaAuth from './solanaAuth';
 
 const _ = require('lodash');
 
@@ -11,6 +12,7 @@ const mapBySigType = (sigTypes: string[], authObject: object) => {
 const authProviders = {
   ...mapBySigType(['polkadot', 'polka', 'substrate', 'crust'], PolkadotAuth),
   ...mapBySigType(['ethereum', 'eth'], EthAuth),
+  ...mapBySigType(['solana', 'sol', 'phantom'], SolanaAuth),
 };
 
 function auth(signatureType: string, data: AuthData): boolean {
