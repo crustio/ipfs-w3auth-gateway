@@ -4,7 +4,7 @@ const nacl = require('tweetnacl');
 const bs58 = require('bs58');
 
 /**
- * SolanaAuth expectes BS58 public address, and hex signature string
+ * SolanaAuth expects BS58 public address, and hex signature string
  */
 function auth(data: AuthData): boolean {
   const {address, signature} = data;

@@ -37,14 +37,14 @@ server.all('*', (req: Request, res: Response) => {
     const credentials = Buffer.from(base64Credentials, 'base64').toString(
       'ascii'
     );
-    // Parse base64 decoded AuthToken as `[polkadot/eth/solana].PubKey:SignedMsg`
+    // Parse base64 decoded AuthToken as `[substrate/eth/solana].PubKey:SignedMsg`
     const [passedAddress, sig] = _.split(credentials, ':');
     console.log(`Got public address '${passedAddress}' and sigature '${sig}'`);
 
-    // Extract signature type. Default to 'polkadot' if not specified
+    // Extract signature type. Default to 'substrate' if not specified
     const gaugedAddress = _.includes(passedAddress, '.')
       ? passedAddress
-      : `polkadot.${passedAddress}`;
+      : `substrate.${passedAddress}`;
     const [sigType, address] = _.split(gaugedAddress, '.');
 
     isValid = authRegistry.auth(sigType, {

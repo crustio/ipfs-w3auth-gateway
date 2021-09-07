@@ -1,5 +1,5 @@
 import {AuthData, AuthError} from './types';
-import PolkadotAuth from './polkadotAuth';
+import SubstrateAuth from './substrateAuth';
 import EthAuth from './ethAuth';
 import SolanaAuth from './solanaAuth';
 
@@ -10,7 +10,7 @@ const mapBySigType = (sigTypes: string[], authObject: object) => {
 };
 
 const authProviders = {
-  ...mapBySigType(['polkadot', 'polka', 'substrate', 'crust'], PolkadotAuth),
+  ...mapBySigType(['substrate', 'polkadot', 'crust'], SubstrateAuth),
   ...mapBySigType(['ethereum', 'eth'], EthAuth),
   ...mapBySigType(['solana', 'sol', 'phantom'], SolanaAuth),
 };

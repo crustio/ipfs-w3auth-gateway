@@ -7,7 +7,7 @@ function auth(data: AuthData): boolean {
   const {address, signature} = data;
 
   try {
-    console.log('Validate as polkadot signature.');
+    console.log('Validate as substrate signature.');
     const publicKey = decodeAddress(address);
     const hexPublicKey = u8aToHex(publicKey);
     return signatureVerify(address, signature, hexPublicKey).isValid;
