@@ -194,7 +194,7 @@ Just sign the `PubKey` with your eth private key to get the `SignedMsg`
 
 You can sign the `PubKey` with your solana private key to get the `SignedMsg`
 
-- With [Solana Signer Sandbox](https://gateway.pinata.cloud/ipfs/QmYXnTQwKkup7yNLXZz2VyBvBj9eJB1knG8V8dnmjNuNnu/) (deploy with IPFS, source code is [here](https://github.com/zikunfan/solana-signer))
+- With [Solana Signer Sandbox](https://bafybeiexn4chci4exl54hlispdhwste6mpdcvgnu5zei53r2yl24hq2kri.ipfs.dweb.link/) (deploy with IPFS(cid: `QmYXnTQwKkup7yNLXZz2VyBvBj9eJB1knG8V8dnmjNuNnu`), source code is [here](https://github.com/zikunfan/solana-signer), you can deploy yourself)
 - With [Phantom](https://docs.phantom.app/integrating/signing-a-message)
 
 #### 4. With Polygon
