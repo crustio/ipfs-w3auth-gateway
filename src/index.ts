@@ -1,30 +1,23 @@
 /* eslint-disable node/no-extraneous-import */
 require('dotenv').config();
 
-import * as http from 'http';
-import * as httpProxy from 'http-proxy';
-
-import {decodeAddress, signatureVerify} from '@polkadot/util-crypto';
-import {u8aToHex} from '@polkadot/util';
 import * as _ from 'lodash';
+import * as httpProxy from 'http-proxy';
+import {Request, Response} from 'express';
 
-const EthAccounts = require('web3-eth-accounts');
-const ethAccounts = new EthAccounts();
+import {AuthError} from './auth/types';
+import authRegistry from './auth/authRegistry';
+
+const express = require('express');
+const cors = require('cors');
+
+const server = express();
+server.use(cors());
 
 const proxy = httpProxy.createProxyServer({});
 
-const server = http.createServer((req, res) => {
-  if (req.method === 'OPTIONS') {
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(
-      JSON.stringify({
-        Success: true,
-      })
-    );
-    return;
-  }
-
-  // 1. Parse auth header as [pubKey, sig]
+server.all('*', (req: Request, res: Response) => {
+  // Parse basic auth header 'Authorization: Basic [AuthToken]'
   if (!_.includes(req.headers.authorization, 'Basic ')) {
     res.writeHead(401, {'Content-Type': 'application/json'});
     res.end(
@@ -44,30 +37,26 @@ const server = http.createServer((req, res) => {
     const credentials = Buffer.from(base64Credentials, 'base64').toString(
       'ascii'
     );
-    const [address, sig] = credentials.split(':');
-    console.log(`Got public address '${address}' and sigature '${sig}'`);
+    // Parse base64 decoded AuthToken as `[substrate/eth/solana].PubKey:SignedMsg`
+    const [passedAddress, sig] = _.split(credentials, ':');
+    console.log(`Got public address '${passedAddress}' and sigature '${sig}'`);
 
-    // 2.1 Validate with substrate
-    // TODO: More web3 validating methods, like ethereum, solana, filecoin, ...
-    const publicKey = decodeAddress(address);
-    const hexPublicKey = u8aToHex(publicKey);
-    isValid = signatureVerify(address, sig, hexPublicKey).isValid;
+    // Extract signature type. Default to 'substrate' if not specified
+    const gaugedAddress = _.includes(passedAddress, '.')
+      ? passedAddress
+      : `substrate.${passedAddress}`;
+    const [sigType, address] = _.split(gaugedAddress, '.');
 
-    // 2.2 Validate with eth
-    if (!isValid) {
-      console.log(
-        'Invalid polkadot signature. Trying to validate as ethereum signature.'
-      );
-      const recoveredAddress = ethAccounts.recover(address, sig);
-      console.log(`Recovered address ${recoveredAddress}`);
-      isValid = recoveredAddress === address;
-    }
+    isValid = authRegistry.auth(sigType, {
+      address,
+      signature: sig,
+    });
   } catch (error) {
     console.error(error.message);
     res.writeHead(401, {'Content-Type': 'application/json'});
     res.end(
       JSON.stringify({
-        Error: 'Invalid Signature',
+        Error: error instanceof AuthError ? error.message : 'Invalid Signature',
       })
     );
     return;
