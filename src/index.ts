@@ -49,7 +49,7 @@ server.all('*', (req: Request, res: Response) => {
     // 4. Extract chain type, default: 'sub' if not specified
     const gaugedAddress = _.includes(passedAddress, chainTypeDelimiter)
       ? passedAddress
-      : `sub.${passedAddress}`;
+      : `sub${chainTypeDelimiter}${passedAddress}`;
     const [chainType, address] = _.split(gaugedAddress, chainTypeDelimiter);
 
     isValid = authRegistry.auth(chainType, {
