@@ -16,8 +16,11 @@ server.use(cors());
 
 const proxy = httpProxy.createProxyServer({});
 
+const chainTypeDelimiter = '-';
+const pkSigDelimiter = ':';
+
 server.all('*', (req: Request, res: Response) => {
-  // Parse basic auth header 'Authorization: Basic [AuthToken]'
+  // 1. Parse basic auth header 'Authorization: Basic [AuthToken]'
   if (!_.includes(req.headers.authorization, 'Basic ')) {
     res.writeHead(401, {'Content-Type': 'application/json'});
     res.end(
@@ -30,6 +33,7 @@ server.all('*', (req: Request, res: Response) => {
 
   let isValid = false;
   try {
+    // 2. Decode AuthToken
     const base64Credentials = _.split(
       _.trim(req.headers.authorization),
       ' '
@@ -37,17 +41,18 @@ server.all('*', (req: Request, res: Response) => {
     const credentials = Buffer.from(base64Credentials, 'base64').toString(
       'ascii'
     );
-    // Parse base64 decoded AuthToken as `[substrate/eth/solana].PubKey:SignedMsg`
-    const [passedAddress, sig] = _.split(credentials, ':');
+
+    // 3. Parse AuthToken as `ChainType[substrate/eth/solana].PubKey:SignedMsg`
+    const [passedAddress, sig] = _.split(credentials, pkSigDelimiter);
     console.log(`Got public address '${passedAddress}' and sigature '${sig}'`);
 
-    // Extract signature type. Default to 'substrate' if not specified
-    const gaugedAddress = _.includes(passedAddress, '.')
+    // 4. Extract chain type, default: 'sub' if not specified
+    const gaugedAddress = _.includes(passedAddress, chainTypeDelimiter)
       ? passedAddress
-      : `substrate.${passedAddress}`;
-    const [sigType, address] = _.split(gaugedAddress, '.');
+      : `sub.${passedAddress}`;
+    const [chainType, address] = _.split(gaugedAddress, chainTypeDelimiter);
 
-    isValid = authRegistry.auth(sigType, {
+    isValid = authRegistry.auth(chainType, {
       address,
       signature: sig,
     });
@@ -62,8 +67,6 @@ server.all('*', (req: Request, res: Response) => {
     return;
   }
 
-  // You can define here your custom logic to handle the request
-  // and then proxy the request.
   if (isValid === true) {
     const target = process.env.IPFS_ENDPOINT || 'http://127.0.0.1:5001';
     console.log(`Validation success. Proxying request to ${target}`);
