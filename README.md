@@ -134,10 +134,18 @@ Authorization: Basic <base64(PubKey:SignedMsg)>
 Let's take `cURL` as an example 😎
 
 ```shell
-curl -X POST -F file=@myfile -u "PubKey:SignedMsg" "https://localhost:5050/api/v0/add"
+curl -X POST -F file=@myfile -u "ChainType-PubKey:SignedMsg" "https://localhost:5050/api/v0/add"
 ```
 
-### Get Auth header
+### Get ChainType
+
+`ChainType` now can be:
+
+1. `sub`(or `substrate`)
+2. `eth`(or `ethereum`)
+3. `sol`(or `solana`)
+
+### Get PubKey and SignedMsg
 
 You can get `PubKey` and `SignedMsg` by using the following web3-ways:
 
@@ -169,7 +177,7 @@ Just sign the `PubKey` with your private key to get the `SignedMsg`
 
 `PubKey` is just the ethereum address(42-characters) start with `0x`
 
-##### Get `SignedMsg`s
+##### Get `SignedMsg`
 
 Just sign the `PubKey` with your eth private key to get the `SignedMsg`
 
@@ -178,7 +186,16 @@ Just sign the `PubKey` with your eth private key to get the `SignedMsg`
 
 #### 3. With Solana
 
-> Comming Soon
+##### Get `PubKey`
+
+`PubKey` is just the solana address
+
+##### Get `SignedMsg`
+
+You can sign the `PubKey` with your solana private key to get the `SignedMsg`
+
+- With [Solana Signer Sandbox](https://gateway.pinata.cloud/ipfs/QmYXnTQwKkup7yNLXZz2VyBvBj9eJB1knG8V8dnmjNuNnu/) (deploy with IPFS, source code is [here](https://github.com/zikunfan/solana-signer))
+- With [Phantom](https://docs.phantom.app/integrating/signing-a-message)
 
 #### 4. With Polygon
 
