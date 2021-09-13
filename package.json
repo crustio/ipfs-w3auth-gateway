@@ -1,6 +1,6 @@
 {
-  "name": "ipfs-web3-authenticator",
-  "version": "0.2.0",
+  "name": "ipfs-w3auth-gateway",
+  "version": "0.3.0",
   "main": "src/index.ts",
   "repository": "https://github.com/crustio/ipfs-web3-authenticator.git",
   "author": "Zikun Fan <kun@crust.network>",
