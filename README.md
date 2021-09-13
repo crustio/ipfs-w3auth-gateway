@@ -1,6 +1,6 @@
-# IPFS W3Auth &middot; [![GitHub license](https://img.shields.io/github/license/crustio/crust?logo=apache)](LICENSE)
+# IPFS W3Auth Gateway &middot; [![GitHub license](https://img.shields.io/github/license/crustio/crust?logo=apache)](LICENSE)
 
-IPFS W3Auth is a lightweight Web3-based authentication service basedon **IPFS gateway** and **reverse proxy**
+IPFS W3Auth Gateway is a lightweight Web3-based authentication service basedon **IPFS gateway** and **reverse proxy**
 
 ## ❓ [About IPFS W3Auth](https://wiki.crust.network/docs/en/buildIPFSWeb3AuthGW)
 
