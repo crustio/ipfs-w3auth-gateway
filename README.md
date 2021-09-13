@@ -2,13 +2,13 @@
 
 IPFS W3Auth Gateway is a lightweight Web3-based authentication service basedon **IPFS gateway** and **reverse proxy**
 
-## ❓ [About IPFS W3Auth](https://wiki.crust.network/docs/en/buildIPFSWeb3AuthGW)
+## ❓ [About IPFS W3Auth Gateway](https://wiki.crust.network/docs/en/buildIPFSWeb3AuthGW)
 
 ## 🚀 Deployment
 
 > Please make sure you have IPFS Gateway runnning locally, you can refer [this doc](https://docs.ipfs.io/concepts/ipfs-gateway/#overview) to config the gateway information.
 
-### 1. Run IPFS W3Auth
+### 1. Run IPFS W3Auth Gateway
 
 - Run with docker
 
@@ -29,7 +29,7 @@ yarn && yarn build
 PORT=5050 IPFS_ENDPOINT=http://localhost:5001 yarn start
 ```
 
-- **PORT**: W3Auth service listening port
+- **PORT**: W3Auth Gateway service listening port
 
 - **IPFS_ENDPOINT**: IPFS local API endpoint
 
