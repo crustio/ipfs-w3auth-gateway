@@ -25,11 +25,11 @@
     "bs58": "^4.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
+    "ethers": "^5.4.6",
     "express": "^4.17.1",
     "http-proxy": "^1.18.1",
     "lodash": "^4.17.21",
-    "tweetnacl": "^1.0.3",
-    "web3-eth-accounts": "^1.5.2"
+    "tweetnacl": "^1.0.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
