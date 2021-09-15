@@ -145,6 +145,7 @@ curl -X POST -F file=@myfile -u "ChainType-PubKey:SignedMsg" "http://localhost:5
 2. `eth`(or `ethereum`)
 3. `sol`(or `solana`)
 4. `pol`(or `polygon`)
+5. `nea`(or `near`)
 
 ### Get PubKey and SignedMsg
 
