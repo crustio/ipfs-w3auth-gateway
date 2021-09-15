@@ -10,9 +10,9 @@ const mapBySigType = (sigTypes: string[], authObject: object) => {
 };
 
 const authProviders = {
-  ...mapBySigType(['substrate', 'sub', 'cru'], SubstrateAuth),
-  ...mapBySigType(['ethereum', 'eth', 'pol'], EthAuth),
-  ...mapBySigType(['solana', 'sol'], SolanaAuth),
+  ...mapBySigType(['substrate', 'sub', `crust`, 'cru'], SubstrateAuth),
+  ...mapBySigType(['ethereum', 'eth', 'polygon', 'pol'], EthAuth),
+  ...mapBySigType(['solana', 'sol', 'near', `nea`], SolanaAuth),
 };
 
 function auth(signatureType: string, data: AuthData): boolean {
