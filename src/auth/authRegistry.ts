@@ -2,6 +2,7 @@ import {AuthData, AuthError} from './types';
 import SubstrateAuth from './substrateAuth';
 import EthAuth from './ethAuth';
 import SolanaAuth from './solanaAuth';
+import AvalancheAuth from './avalancheAuth';
 
 const _ = require('lodash');
 
@@ -13,6 +14,7 @@ const authProviders = {
   ...mapBySigType(['substrate', 'sub', `crust`, 'cru'], SubstrateAuth),
   ...mapBySigType(['ethereum', 'eth', 'polygon', 'pol'], EthAuth),
   ...mapBySigType(['solana', 'sol', 'near', `nea`], SolanaAuth),
+  ...mapBySigType(['avalanche', 'ava'], AvalancheAuth),
 };
 
 function auth(signatureType: string, data: AuthData): boolean {
