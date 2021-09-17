@@ -19,6 +19,7 @@ function auth(data: AuthData): boolean {
     address,
     signatureWithPrefix
   );
+  console.log(`Recovered address: ${recoveredAddress}`);
   if (addressesEquals(address, recoveredAddress)) {
     return true;
   }
@@ -29,6 +30,7 @@ function auth(data: AuthData): boolean {
     messageHash,
     signatureWithPrefix
   );
+  console.log(`Recovered address: ${recoveredAddress}`);
   return addressesEquals(address, recoveredAddress);
 }
 
