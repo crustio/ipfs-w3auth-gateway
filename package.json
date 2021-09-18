@@ -29,7 +29,9 @@
     "express": "^4.17.1",
     "http-proxy": "^1.18.1",
     "lodash": "^4.17.21",
-    "tweetnacl": "^1.0.3"
+    "tweetnacl": "^1.0.3",
+    "create-hash": "1.2.0",
+    "avalanche": "3.8.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
