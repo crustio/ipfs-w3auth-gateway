@@ -11,9 +11,9 @@ const mapBySigType = (sigTypes: string[], authObject: object) => {
 };
 
 const authProviders = {
-  ...mapBySigType(['substrate', 'sub', `crust`, 'cru'], SubstrateAuth),
+  ...mapBySigType(['substrate', 'sub', 'crust', 'cru'], SubstrateAuth),
   ...mapBySigType(['ethereum', 'eth', 'polygon', 'pol'], EthAuth),
-  ...mapBySigType(['solana', 'sol', 'near', `nea`], SolanaAuth),
+  ...mapBySigType(['solana', 'sol', 'near', 'nea'], SolanaAuth),
   ...mapBySigType(['avalanche', 'ava'], AvalancheAuth),
 };
 
