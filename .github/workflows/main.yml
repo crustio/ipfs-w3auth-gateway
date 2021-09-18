@@ -7,8 +7,7 @@ on:
 
 jobs:
   docker:
-    # if: github.repository == 'crustio/ipfs-w3auth-gateway'
-    if: github.repository == 'decooio/ipfs-w3auth'
+    if: github.repository == 'crustio/ipfs-w3auth-gateway'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,4 +30,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: decooio/ipfs-w3auth:latest
+          tags: crustio/ipfs-w3auth:latest
