@@ -19,7 +19,7 @@ const proxy = httpProxy.createProxyServer({});
 const chainTypeDelimiter = '-';
 const pkSigDelimiter = ':';
 
-server.all('*', (req: Request, res: Response) => {
+server.all('*', async(req: Request, res: Response) => {
   // 1. Parse basic auth header 'Authorization: Basic [AuthToken]'
   if (!_.includes(req.headers.authorization, 'Basic ')) {
     res.writeHead(401, {'Content-Type': 'application/json'});
@@ -52,7 +52,7 @@ server.all('*', (req: Request, res: Response) => {
       : `sub${chainTypeDelimiter}${passedAddress}`;
     const [chainType, address] = _.split(gaugedAddress, chainTypeDelimiter);
 
-    isValid = authRegistry.auth(chainType, {
+    isValid = await authRegistry.auth(chainType, {
       address,
       signature: sig,
     });

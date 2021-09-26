@@ -3,6 +3,7 @@ import SubstrateAuth from './substrateAuth';
 import EthAuth from './ethAuth';
 import SolanaAuth from './solanaAuth';
 import AvalancheAuth from './avalancheAuth';
+import FlowAuth from './flowAuth';
 
 const _ = require('lodash');
 
@@ -15,9 +16,10 @@ const authProviders = {
   ...mapBySigType(['ethereum', 'eth', 'polygon', 'pol'], EthAuth),
   ...mapBySigType(['solana', 'sol', 'near', 'nea'], SolanaAuth),
   ...mapBySigType(['avalanche', 'ava'], AvalancheAuth),
+  ...mapBySigType(['flow'], FlowAuth),
 };
 
-function auth(signatureType: string, data: AuthData): boolean {
+function auth(signatureType: string, data: AuthData): Promise<boolean> {
   const authProvider = _.get(
     authProviders,
     _.toLower(_.trim(signatureType)),
