@@ -21,8 +21,7 @@
     "posttest": "yarn run lint"
   },
   "dependencies": {
-    "@onflow/fcl": "^0.0.77",
-    "@onflow/types": "^0.0.5",
+    "@crustio/ipfs-w3auth-handler": "0.0.1",
     "@polkadot/api": "^5.9.1",
     "avalanche": "3.8.1",
     "bs58": "^4.0.1",
