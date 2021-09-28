@@ -4,7 +4,7 @@ require('dotenv').config();
 import * as httpProxy from 'http-proxy';
 import {Request, Response} from 'express';
 
-import * as authHandler from '@crustio/auth-handler';
+import * as authHandler from '@crustio/ipfs-w3auth-handler';
 
 const express = require('express');
 const cors = require('cors');
