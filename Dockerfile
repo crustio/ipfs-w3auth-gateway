@@ -6,8 +6,5 @@ WORKDIR /usr/src/ipfs-w3auth
 # Move source files to docker image
 COPY . .
 
-# Install dependencies
-RUN yarn && yarn build
-
 # Run
 ENTRYPOINT yarn start
