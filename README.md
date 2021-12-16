@@ -226,6 +226,10 @@ You can sign the `Address` **without** chainID prefix, such as `avax1se4e9lvhlfw
 
 - With [Avalanche Wallet](https://wallet.avax.network/wallet/advanced)
 
+## 🚀 Performance
+
+Learn IPFS W3Auth gateway performance on [LINK](./docs/PERFORMANCE.md)
+
 ## 💻 Build
 
 ### Install
