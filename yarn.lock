@@ -69,10 +69,10 @@
     "@onflow/fcl" "0.0.77"
     "@onflow/types" "0.0.5"
 
-"@crustio/ipfs-w3auth-handler@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@crustio/ipfs-w3auth-handler/-/ipfs-w3auth-handler-0.0.4.tgz"
-  integrity sha512-sbPomhP9dYRqTzijTQNjrbFoSPUtGDqn4nFzA7dF2Y7h1f56odVyQNgRmgKlwJy9c/2amp4x6ri4X9KHCzBLTg==
+"@crustio/ipfs-w3auth-handler@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@crustio/ipfs-w3auth-handler/-/ipfs-w3auth-handler-0.0.6.tgz#edde23d12d21b8f9fcf8990e2101fbc2cdb9ded1"
+  integrity sha512-ijze5c7V5i0o+hb+VyxbmxXOS7Y+kckCpK7OEVvlBzpiTsXv3lKm9ddtQqXWKrcLv4ONo+ASLLl63dcxZcTjzw==
   dependencies:
     "@crustio/ipfs-w3auth-avalanche" "^0.0.1"
     "@crustio/ipfs-w3auth-elrond" "^0.0.1"
