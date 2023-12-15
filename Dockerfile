@@ -1,4 +1,4 @@
-FROM node:current-alpine3.14
+FROM node:20-alpine
 
 # Create directory
 WORKDIR /usr/src/ipfs-w3auth
