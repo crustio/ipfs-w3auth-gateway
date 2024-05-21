@@ -45,6 +45,10 @@
     "ts-node": "^10.2.1",
     "typescript": "^4.0.3"
   },
+  "resolutions": {
+    "@crustio/ipfs-w3auth-substrate": "0.0.4",
+    "usb": "1.8.8"
+  },
   "engines": {
     "node": ">=11.0.0"
   }
